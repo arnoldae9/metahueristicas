@@ -1,0 +1,28 @@
+\begin{thebibliography}{3}
+% this bibliography was produced with the style dinat.bst v2.5
+\makeatletter
+\newcommand{\dinatlabel}[1]%
+{\ifNAT@numbers\else\NAT@biblabelnum{#1}\hspace{2\labelsep}\fi}
+\makeatother
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax\def\url#1{\texttt{#1}}\fi
+
+\bibitem[Chun(2001)]{chun2001core}
+\dinatlabel{Chun 2001} \textsc{Chun}, Wesley:
+\newblock \emph{Core python programming}. Bd.~1.
+\newblock Prentice Hall Professional, 2001
+
+\bibitem[Van~Rossum und Drake~Jr(1991)]{van1991guia}
+\dinatlabel{Van~Rossum und Drake~Jr 1991} \textsc{Van~Rossum}, Guido~;
+  \textsc{Drake~Jr}, Fred~L.:
+\newblock Gu{\'\i}a de aprendizaje de Python.
+\newblock In: \emph{Release}
+\newblock 2 (1991)
+
+\bibitem[Van~Rossum und Drake~Jr(2017)]{van2017tutorial}
+\dinatlabel{Van~Rossum und Drake~Jr 2017} \textsc{Van~Rossum}, Guido~;
+  \textsc{Drake~Jr}, Fred~L.:
+\newblock \emph{El tutorial de Python}.
+\newblock Python Software Foundation, 2017
+
+\end{thebibliography}

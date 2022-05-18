@@ -1,0 +1,32 @@
+@article{van1991guia,
+  title={Gu{\'\i}a de aprendizaje de Python},
+  author={Van Rossum, Guido and Drake Jr, Fred L},
+  journal={Release},
+  volume={2},
+  year={1991}
+}
+
+@book{van2017tutorial,
+  title={El tutorial de Python},
+  author={Van Rossum, Guido and Drake Jr, Fred L},
+  year={2017},
+  publisher={Python Software Foundation}
+}
+
+@book{chun2001core,
+  title={Core python programming},
+  author={Chun, Wesley},
+  volume={1},
+  year={2001},
+  publisher={Prentice Hall Professional}
+}
+
+@Electronic{https://www.revistas.una.ac.cr/index.php/mhsalud,
+  address  = {PO Box: 86-3000, Heredia, Costa Rica, Benjamín Núñez Campus},
+  author   = {Revista MHSalud, Universidad Nacional (e-issn: 1659-097X)},
+  language = {es},
+  title    = {Normas de Colaboración},
+  url      = {https://www.revistas.una.ac.cr/index.php/mhsalud},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

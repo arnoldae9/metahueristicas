@@ -1,0 +1,99 @@
+\documentclass{report}
+\usepackage[margin = 1 in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, graphicx, lipsum}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=red,
+    pdftitle={Pseudocódigo ladrón},
+    }
+\usepackage{fancyvrb}
+\usepackage{fancyhdr, lastpage}
+\pagestyle{fancy}
+\lhead{Metahuerísticas}
+\rhead{Universidad Autónoma de Nuevo León}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+
+\usepackage{etoolbox} %Use carefully!
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+\usepackage[Glenn]{fncychap}
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+
+\newtcbtheorem{theo}%
+  {Theorem}{}{theorem}
+  
+\usepackage{siunitx}
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+Se presenta el algoritmo general.
+\begin{algorithm}
+   \caption{Iterated Greedy}
+    \begin{algorithmic}[1]
+        \State $\textbf{procedure} \, Iterated \, Greedy$
+        \State \hspace{1cm} $s_0 = General InitialSolution$
+        \State \hspace{1cm} \textbf{repeat}
+        \State \hspace{1.5 cm} $s_p = \text{Destruction}(s^*)$
+        \State \hspace{1.5 cm} $s' = \text{Construction}(s_p)$
+        \State \hspace{1.5 cm} $s^* = \text{AcceptanceCriterion}(s^*,s')$
+    \end{algorithmic}
+\end{algorithm}
+
+Algoritmo para la solución inicial.
+\begin{algorithm}
+    \caption{General Inicial Solution}
+    \begin{algorithmic}[1]
+        \State Algorithm local search for vector x.
+        \State Algorithm minimum weight and maximum distance search for vector z. 
+    \end{algorithmic}
+\end{algorithm}
+
+Algoritmo para la destrucción.
+\begin{algorithm}
+    \caption{Destruction}
+    \begin{algorithmic}[1]
+        \State Determinate $s_1$, $s_2$. \Comment{$s_1$ and $s_2$ is a vector}
+        \If{long $s_1 > m$ or long $s_2 > n$ }
+            \State \textbf{repeat} step 1.
+        \EndIf
+        \State Eliminate $z_{s_1}$ from vector z.
+        \State Eliminate $x_{s_2}$ from vector x.
+
+    \end{algorithmic}
+\end{algorithm}
+
+Algoritmo para la contrucción.
+\begin{algorithm}[h!]
+    \caption{Construction}
+    \begin{algorithmic}[1]
+        \State  $s_{p_1} = (z_1,z_2, \cdots ,z_{m-s_1}), \, s_{p_2} = (x_1,x_, \cdots ,x_{n-s_2})$
+        \State  $s^{'}_1=$ Algoritmo en base al cociente de rendimiento $r_i = \dfrac{b_i}{v_i}, \, \forall s_1$
+        \State  $s^{'}_2 =$ Algoritmo del vecino más cercano $\forall p_2 $.
+         
+    \end{algorithmic}
+\end{algorithm}    
+
+Algoritmo para la aceptación.
+\begin{algorithm}[h!]
+    \caption{Acceptance Criterion}
+    \begin{algorithmic}[1]
+        \State Acceptance Criterion 
+        \If{$G(s^{'}_{2},s^{'}_{1}) > G(s_{2}^{*},s_{1}^{*})$}
+        \State $ s_{2}^{*}\longleftarrow s^{'}_{2} ,s_{1}^{*} \longleftarrow s^{'}_{1}$
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
+
+\end{document}

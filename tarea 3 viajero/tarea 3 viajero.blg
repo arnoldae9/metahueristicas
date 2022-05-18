@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: tarea 3 viajero.aux
+The style file: dinat.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: biblio.bib
+You've used 3 entries,
+            3552 wiz_defined-function locations,
+            809 strings with 6227 characters,
+and the built_in function-call counts, 1938 in all, are:
+= -- 210
+> -- 27
+< -- 42
++ -- 51
+- -- 17
+* -- 177
+:= -- 319
+add.period$ -- 3
+call.type$ -- 3
+change.case$ -- 14
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 55
+empty$ -- 163
+format.name$ -- 32
+if$ -- 387
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 7
+newline$ -- 26
+num.names$ -- 12
+pop$ -- 26
+preamble$ -- 1
+purify$ -- 14
+quote$ -- 0
+skip$ -- 82
+stack$ -- 0
+substring$ -- 166
+swap$ -- 13
+text.length$ -- 6
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 23
+warning$ -- 0
+while$ -- 20
+width$ -- 0
+write$ -- 35
