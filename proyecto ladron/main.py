@@ -7,72 +7,102 @@ W=3 # peso maximo
 Wk = [3,1,1,2,3]
 pk = [100,40,40,20,30]
 d = [[-1,5,6,6],[5,-1,5,6],[6,5,-1,4],[6,6,4,-1]]
-
-
-#modulo de inicializacion
-x=[1,2,4,3]
-z=[0,3,3,0,0]
-
-
-#funcion f
-ciudadesutilizadas = []
-for item in z:
-    if item != 0:
-        if item not in ciudadesutilizadas:
-            ciudadesutilizadas.append(item)
 fxz = 0
 vc=1
 wc=0
-for i in x:
-    for j in x:
-        if x.index(i) - x.index(j) == -1:
-            if i in ciudadesutilizadas:
-                for item in z:
-                    if item == i:
-                        wc+=Wk[z.index(item)]
-                vc = vmax - wc*(vmax-vmin)/W
-                fxz += d[i-1][j-1]/vc
-            else:
-                fxz += d[i-1][j-1]/vc
-        if x.index(i) == n-1 and x.index(j)==0:
-            if i in ciudadesutilizadas:
-                for item in z:
-                    if item == i:
-                        wc+=Wk[z.index(item)]
-                vc = vmax - wc*(vmax-vmin)/W
-                fxz += d[i-1][j-1]/vc
-            else:
-                fxz += d[i-1][j-1]/vc
-
+#modulo de inicializacion
+x=[1,2,4,3]
+z=[0,3,3,0,0]
+fxz = 0
+vc=1
+wc=0
+gz= 0
+#funcion f
+def f(z,x,Wk,vmin,vmax,W,fxz,vc,wc):
+    ciudadesutilizadas = []
+    for item in z:
+        if item != 0:
+            if item not in ciudadesutilizadas:
+                ciudadesutilizadas.append(item)
+    for i in x:
+        for j in x:
+            if x.index(i) - x.index(j) == -1:
+                if i in ciudadesutilizadas:
+                    for item in z:
+                        if item == i:
+                            wc+=Wk[z.index(item)]
+                    vc = vmax - wc*(vmax-vmin)/W
+                    fxz += d[i-1][j-1]/vc
+                else:
+                    fxz += d[i-1][j-1]/vc
+            if x.index(i) == n-1 and x.index(j)==0:
+                if i in ciudadesutilizadas:
+                    for item in z:
+                        if item == i:
+                            wc+=Wk[z.index(item)]
+                    vc = vmax - wc*(vmax-vmin)/W
+                    fxz += d[i-1][j-1]/vc
+                else:
+                    fxz += d[i-1][j-1]/vc
+    return fxz
+fxz = f(z,x,Wk,vmin,vmax,W,fxz,vc,wc)
 print("El valor de f(xz) es: ",fxz)
 
+
 #funcion g
-itemsutilizados = []
-for i in range(m):  # ciclo para obtener los items utilizados
-    if z[i] != 0:
-        itemsutilizados.append(i)
-gz= 0
-for i in itemsutilizados:
-    gz+=pk[i]
+def g(m,gz,pk):
+    itemsutilizados = []
+    for i in range(m):  # ciclo para obtener los items utilizados
+        if z[i] != 0:
+            itemsutilizados.append(i)
+    for i in itemsutilizados:
+        gz+=pk[i]
+    return gz
+
+gz = g(m,gz,pk)
 print("El valor de g(z) es: ",gz)
 
 # funcion G(xz)
-Gxz = gz-fxz
+def Gxz(gz,fxz):
+    return gz-fxz
+Gxz = Gxz(gz,fxz)
 print("El valor de G(xz) es: ",Gxz)
 
 # modulo de destruccion
 # d_viajero es el numero de ciudades destruidas.
 # d_item es el numero de items destruidos.
-d_viajero = 1
-d_item = 1
 # se remueve una ciudad aleatoria
-dviajero = random.randint(0,n-1) 
-del x[dviajero]
-ditem = random.randint(0,m-1)
-del z[ditem]
-print("ciudad eliminada: ",dviajero+1)
-print("item eliminado: ",ditem+1)
-print(x,z)
+def eliminarciu(x):
+    ciuelim = [] # ciudades eliminadas
+    d_viajero = random.randint(1,3)
+    for i in range(d_viajero):
+        dviajero = random.randint(1,4)
+        while(dviajero not in x):
+            dviajero = random.randint(1,4)
+        x.remove(dviajero)
+        ciuelim.append(dviajero)
+    return ciuelim
+    
+ciuelim = eliminarciu(x)
 
-#modulo de construccion
+# se remueve un item aleatorio
+def eliminaritem(z):
+    itemelim = [] # items eliminados
+    d_item = random.randint(1,5)
+    for i in range(d_item):
+        ditem = random.randint(1,5)
+        while(ditem in itemelim):
+            ditem = random.randint(1,5)
+        itemelim.append(ditem)
+    
+        for index, value in enumerate(z):
+            if value == ditem:
+                z[index] = 0
+    return itemelim
 
+itemelim = eliminaritem(z)
+
+print(z)
+print(x)
+print(ciuelim)
+print(itemelim)
