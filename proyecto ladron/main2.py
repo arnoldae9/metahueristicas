@@ -11,13 +11,12 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
         return lista
     def distancia(a, b):
         return ((a[1]-b[1])**(2)+(a[2]-b[2])**(2))**0.5
-    with open('a280.txt','r') as archivo:
+    with open('4461.txt','r') as archivo:
         datos = archivo.read().split("\n")
         nombre = datos[0].split()[2]
         tipo = datos[1].split()[3]+datos[1].split()[4]+datos[1].split()[5]
         n = int(datos[2].split()[1])
         m = int(datos[3].split()[3])
-        print(m)
         W = int(datos[4].split()[3])
         vmax = float(datos[5].split()[2])
         vmin = float(datos[6].split()[2])
@@ -28,23 +27,27 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
         Wk = []
         disponibilidad = []
         i = 0
-        for i in range(280): #TODO nodo (x,y)
+        for i in range(4461): #TODO nodo (x,y)
             linea = datos[i+10].split()
             linea = convertiraenteros(linea)
             nodos.append(linea)
+        print(len(nodos))
         for i in range(len(nodos)): #TODO valor de la matriz d
             renglon=[]
             for j in range(len(nodos)):
                 renglon.append(distancia(nodos[i],nodos[j]))
             d.append(renglon)
-        for i in range(279): #TODO pk valores
-            pki = datos[i+291].split()[1]
+        print(len(d))
+        for i in range(4460): #TODO pk valores
+            pki = datos[i+4472].split()[1]
             pk.append(pki)
-            Wki = datos[i+291].split()[2]
+            Wki = datos[i+4472].split()[2]
             Wk.append(Wki)
-            disponibilidadi = datos[i+291].split()[3]
-            disponibilidadi = convertiraenteros([disponibilidadi])
+            disponibilidadi = datos[i+4472].split()[3]
             disponibilidad.append(disponibilidadi)
+        pk = convertiraenteros(pk)
+        Wk = convertiraenteros(Wk)
+        disponibilidad = convertiraenteros(disponibilidad)
         pk = convertiraenteros(pk)
         Wk = convertiraenteros(Wk)
     #disponibilidad = [[inf],[4,5],[1,2,3],[4]]
@@ -60,7 +63,7 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
         nodoinicial = 1
         x.append(nodoinicial)
         posibles = []
-        while len(x) < 280:
+        while len(x) < n:
             minimo = inf    
             for indice, valor in enumerate(d[nodoinicial-1]):
                 if indice + 1 not in x:
@@ -133,11 +136,11 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
     #TODO  se remueve una ciudad aleatoria
     def eliminarciu(x):
         ciuelim = [] # ciudades eliminadas
-        d_viajero = random.randint(2,279)
+        d_viajero = random.randint(2,4460)
         for i in range(d_viajero):
-            dviajero = random.randint(2,280)
+            dviajero = random.randint(2,4461)
             while(dviajero not in x):
-                dviajero = random.randint(2,280)
+                dviajero = random.randint(2,4461)
             x.remove(dviajero)
             ciuelim.append(dviajero)
         return ciuelim
@@ -145,11 +148,11 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
     #TODO  se remueve un item aleatorio
     def eliminaritem(z,wc):
         itemelim = [] # items eliminados
-        d_item = random.randint(1,279)
+        d_item = random.randint(1,4460)
         for i in range(d_item):
-            ditem = random.randint(1,279)
+            ditem = random.randint(1,4460)
             while(ditem in itemelim):
-                ditem = random.randint(1,279)
+                ditem = random.randint(1,4460)
             itemelim.append(ditem)
 
             for index, value in enumerate(z):
@@ -183,6 +186,7 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
             y[indice + 1 ] = copy.deepcopy(x[indice])
             f1 = f(z,x,Wk,vmin,vmax,W,vc,wc,d)
             f2 = f(z,y,Wk,vmin,vmax,W,vc,wc,d)
+            print(f1,f2)
             if f2 < f1:
                 x = copy.deepcopy(y)
                 break
@@ -251,14 +255,14 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
     contador =0
     xinicial = solinicial(x,d)
     zinicial, wcinicial = construcciónitems(disponibilidad,wc,W,z,Wk)
-    while contador < 10000:
+    while contador < 1:
         finicial = f(zinicial,xinicial,Wk,vmin,vmax,W,vc,wcinicial,d)
         gzinicial = g(m,gz,pk,zinicial)
         Gxzinicial =  Gxz(gzinicial,finicial,R)
         ciuelim = eliminarciu(xinicial)
         wc2, itemelim = eliminaritem(zinicial,wcinicial)
         x2=consciu2(xinicial,ciuelim,d,alfa)
-        x2 = busqueda(x2)
+        #x2 = busqueda(x2)
         #x2=consciu(ciuelim,xinicial,d)
         z2,wc2=construcciónitems(disponibilidad,wc2,W,zinicial,Wk)
         ffinal = f(z2,x2,Wk,vmin,vmax,W,vc,wc2,d)
@@ -271,6 +275,7 @@ for alfa in [0.1,0.01,0.001,0.0001,0.00001,0.000001]:
             zinicial=z2
             xinicial=x2
             wcinicial=wc2
+            print(contador)
     print(zinicial,xinicial,Gxzinicial)
 
     with open('resultados.txt','a') as resultados:

@@ -1,0 +1,296 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Define Article %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Using Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{empheq}
+\usepackage{mdframed}
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{psfrag}
+\usepackage{pgfplots}
+\usepackage{bm}
+\usepackage{natbib}
+\usepackage[spanish]{babel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Other Settings
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Page Setting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{a4paper}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Define some useful colors %%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ocre}{RGB}{243,102,25}
+\definecolor{mygray}{RGB}{243,243,244}
+\definecolor{deepGreen}{RGB}{26,111,0}
+\definecolor{shallowGreen}{RGB}{235,255,255}
+\definecolor{deepBlue}{RGB}{61,124,222}
+\definecolor{shallowBlue}{RGB}{235,249,255}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Define an orangebox command %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\orangebox[1]{\fcolorbox{ocre}{mygray}{\hspace{1em}#1\hspace{1em}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% English Environments %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheoremstyle{mytheoremstyle}{3pt}{3pt}{\normalfont}{0cm}{\rmfamily\bfseries}{}{1em}{{\color{black}\thmname{#1}~\thmnumber{#2}}\thmnote{\,--\,#3}}
+\newtheoremstyle{myproblemstyle}{3pt}{3pt}{\normalfont}{0cm}{\rmfamily\bfseries}{}{1em}{{\color{black}\thmname{#1}~\thmnumber{#2}}\thmnote{\,--\,#3}}
+\theoremstyle{mytheoremstyle}
+\newmdtheoremenv[linewidth=1pt,backgroundcolor=shallowGreen,linecolor=deepGreen,leftmargin=0pt,innerleftmargin=20pt,innerrightmargin=20pt,]{theorem}{Theorem}[section]
+\theoremstyle{mytheoremstyle}
+\newmdtheoremenv[linewidth=1pt,backgroundcolor=shallowBlue,linecolor=deepBlue,leftmargin=0pt,innerleftmargin=20pt,innerrightmargin=20pt,]{definition}{Definition}[section]
+\theoremstyle{myproblemstyle}
+\newmdtheoremenv[linecolor=black,leftmargin=0pt,innerleftmargin=10pt,innerrightmargin=10pt,]{problem}{Problem}[section]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Plotting Settings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepgfplotslibrary{colorbrewer}
+\pgfplotsset{width=8cm,compat=1.9}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title & Author %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Proyecto Ladrón}
+\author{Lic. Arnoldo Del Toro Peña}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{etoolbox} %Use carefully!
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+\usepackage[Glenn]{fncychap}
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+
+\newtcbtheorem{theo}%
+{Theorem}{}{theorem}
+
+\usepackage{siunitx}
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\begin{document}
+    \maketitle
+    
+    \thispagestyle{empty}
+    \begin{abstract}
+    	Uso de un método metaheurístico destructivo - constructivo para el problema del ladrón viajero (travelling thief problem) \citep{bonyadi2013travelling}.
+    \end{abstract}
+    {\centering \textit{Palabras clave: python,viajero, mochila, metaheurística, ladrón.}}
+    \section{Introducción}
+    \subsection{Antecedentes}
+    \citet{bonyadi2013travelling} presentan el problema del ladrón viajero con los siguientes parámetros: \\
+    TSP sub-problema:
+    \begin{itemize}
+    	\item  Número de ciudades: $n$
+    	\item $d_ij$ es la distancia de la ciudad $i$ a la ciudad $j$
+    	\item Velocidad $v_c$
+    	\item Solución: vector del tour $x = (x_1, \cdots, x_n)$ donde cada $x_i$ es una ciudad. 
+    \end{itemize} 
+    KP sub-problema:
+    \begin{itemize}
+    	\item Número de items: $m$
+    	\item Peso de cada item: $w_k$
+    	\item Valor de cada item: $p_k$
+    	\item Total de la capacidad de la mochila: $W$
+    	\item Solución: un vector binario llamado items obtenidos $(y = y_1, \cdots, y_m)$ donde cada $y_k$ es 1 si es obtenido y 0 si no lo es.
+    \end{itemize}
+	TTP:
+	\begin{itemize}
+		\item Disponibilidad de item $I_i$ en cada ciudad: $A_i \subseteq \left\{ 1, \cdots, n \right\}$
+		\item Solución: dos vectores, tour $x$ y un plan de obtención de items $z$. Donde $z = (z_1, \cdots, z_m), \, z_i \in \{ 0 \cup A_i \} \, \forall i$ donde cada ciudad tiene una disponibilidad para cada item, si el item $i$ no es obtenido entonces $z_i = 0$ . La solución es un tour para el ladrón y un plan de obtención items. 
+	\end{itemize}
+    Se utilizan dos funciones objetivo, el TTP (por sus siglas en inglés) se trata de un problema en el cual tenemos un ladrón el cual tiene que recorrer $n$ ciudades, cada ciudad tiene un número de objetos posibles de recoger y solo existen $m$ objetos diferentes; se permiten objetos que puedan ser recogidos en distintas ciudades. Cada objeto tiene asociado los parámetros de peso y ganancia, el ladrón tiene una capacidad máxima de peso por lo cual no puede recoger todos los objetos.
+    
+    El ladrón tiene que salir de la ciudad uno para después pasar a otra ciudad y así sucesivamente recorrer todas las ciudades. Durante todo el tiempo en que el ladrón hace el recorrido el tiene que pagar una renta (este valor afecta nuestra función objetivo), durante este mismo tiempo el ladrón lleva una velocidad de ciudad en ciudad que depende del peso que lleve cargando y se define como:
+    \begin{equation}
+    	v_c = \left( v_{max} - W_c \dfrac{v_{max} -  v_{min}}{W} \right) \label{ecua:2}
+    \end{equation}
+	En \ref{ecua:2} $v_{max}$ es la velocidad máxima con la que puede viajar el ladrón y $v_{min}$ es la velocidad mínima con la que se desplaza. $W_c$ es el peso que lleva en la mochila, si la mochila esta vacía entonces $W_c = 0$ y si esta llena $W_v = W$. 
+     Para nuestro algoritmo utilizaremos la primer función presentada de la forma:
+    \begin{equation}
+    	G(xz) = g(z) - R*f(x,z) \label{ecua:1}
+    \end{equation}
+	En la ecuación \ref{ecua:1} obtenemos la ganancia por el viaje y los objetos adquiridos, $g$  es el total del valor de los objetos obtenidos, $R$ es la renta por unidad de tiempo y $f$ (se presenta en la ecuación \ref{ecua:f}) es el total del tiempo obtenido por el tour. 
+	
+	\begin{align}
+		f(x) &= \sum_{i=1}^{n-1} \left( t_{x_i,x_{i+1}} \right) + t_{x_n,x_1}, \quad x= (x_1, \cdots, x_n) \label{ecua:f} \\
+		& \text{donde: } t_{x_i,x_{i+1}} = \dfrac{d_{x_i,x_{i+1}}}{v_c} \nonumber 
+	\end{align}
+
+    Con los parámetros definidos se presenta el pseudo-código:
+    \begin{algorithm}
+    	\caption{Iterated Greedy}
+    	\begin{algorithmic}[1]
+    		\State $\textbf{procedure} \, Iterated \, Greedy$
+    		\State \hspace{1cm} $s_0 = General InitialSolution$
+    		\State \hspace{1cm} \textbf{repeat}
+    		\State \hspace{1.5 cm} $s_p = \text{Destruction}(s^*)$
+    		\State \hspace{1.5 cm} $s' = \text{Construction}(s_p)$
+    		\State \hspace{1.5 cm} $s^* = \text{Acceptance Criterion}(s^*,s')$
+    	\end{algorithmic}
+    \end{algorithm}
+    
+    Algoritmo para la solución inicial.
+    \begin{algorithm}
+    	\caption{General Inicial Solution}
+    	\begin{algorithmic}[1]
+    		\State Algorithm local search for vector x.
+    		\State Algorithm minimum weight and maximum distance search for vector z. 
+    	\end{algorithmic}
+    \end{algorithm}
+    
+    Algoritmo para la destrucción.
+    \begin{algorithm}
+    	\caption{Destruction}
+    	\begin{algorithmic}[1]
+    		\State Determinate $s_1$, $s_2$. \Comment{$s_1$ and $s_2$ is a vector}
+    		\If{long $s_1 > m$ or long $s_2 > n$ }
+    		\State \textbf{repeat} step 1.
+    		\EndIf
+    		\State Eliminate $z_{s_1}$ from vector z.
+    		\State Eliminate $x_{s_2}$ from vector x.
+    		
+    	\end{algorithmic}
+    \end{algorithm}
+    
+    Algoritmo para la contrucción.
+    \begin{algorithm}[h!]
+    	\caption{Construction}
+    	\begin{algorithmic}[1]
+    		\State  $s_{p_1} = (z_1,z_2, \cdots ,z_{m-s_1}), \, s_{p_2} = (x_1,x_, \cdots ,x_{n-s_2})$
+    		\State  $s^{'}_1=$ Algoritmo en base al cociente de rendimiento $r_i = \dfrac{b_i}{v_i}, \, \forall s_1$
+    		\State  $s^{'}_2 =$ Algoritmo del vecino más cercano $\forall p_2 $.
+    		
+    	\end{algorithmic}
+    \end{algorithm}    
+    
+    Algoritmo para la aceptación.
+    \begin{algorithm}[h!]
+    	\caption{Acceptance Criterion}
+    	\begin{algorithmic}[1]
+    		\State Acceptance Criterion 
+    		\If{$G(s^{'}_{2},s^{'}_{1}) > G(s_{2}^{*},s_{1}^{*})$}
+    		\State $ s_{2}^{*}\longleftarrow s^{'}_{2} ,s_{1}^{*} \longleftarrow s^{'}_{1}$
+    		\EndIf
+    	\end{algorithmic}
+    \end{algorithm}  
+	
+    \section{Descripción pseudocódigo}
+    El pseudocódigo se divide en 5 módulos: 
+    \begin{enumerate}
+    	\item \textbf{Módulo general}: se genera una solución inicial y se repiten en orden los módulos de destrucción, construcción y el criterio de aceptación.
+    	\item \textbf{Solución inicial}: mediante una búsqueda local y un LRC se determina el vector $x$ tour, para construir el vector $z$ se escoge el item con menor peso y mayor distancia.
+    	\item \textbf{Destrucción}: se determinan de manera aleatoria dos vectores $s_1, \, s_2$ los cuales son eliminados de los vectores $x$ y $z$ respectivamente.
+    	\item \textbf{Construcción}: de los elementos eliminados se determinan los items a obtener mediante un cociente $\dfrac{b_i}{v_i}$ y las ciudades mediante un algoritmo del vecino más cercano con un LRC.
+    	\item \textbf{Criterio de aceptación}: mientras que $G' >  G$ entonces aceptamos la siguiente solución.  
+    \end{enumerate}
+    
+    
+    \section{Descripción del algoritmo constructivo}
+    
+    Como se mencionó anteriormente, la selección del nodo siguiente se baso en una lista generada por los nodos que estaban entre un cierto rango el cual esta determinado por la siguiente fórmula:
+    
+    \[ c_{min} \leq c_e \leq c_{min} + \alpha * (c_{max} - c_{min}) \]
+    \newline
+    Donde $c_e$ es el costo de los nodos disponibles para visitar, una vez generada la lista seleccionamos al azar un nodo de esta misma, el cual será el nodo próximo a visitar.
+    
+    Esto lo repetimos hasta que todos los nodos esten visitados, agregando el nodo inicial para terminar el recorrido del agente viajero.
+    
+    \section{Descripción del algoritmo búsqueda local}
+    El algoritmo se finaliza cuando todos los nodos estan marcados y tenemos que agregar el nodo inicial al final para poder cerrar el recorrido.Podemos enumerar sus pasos de la siguiente manera:
+    \begin{enumerate}
+    	\item Elección de un vértice arbitrario respecto al vértice actual.
+    	\item Descubra la arista de menor distancia (que cumpla con la ecuación mencionada anteriormente) que ya este conectada al vértice actual y a un vértice no visitado V.
+    	\item Convierta el vértice actual en V.
+    	\item Marque V como visitado.
+    	\item Si todos los vértices del dominio estuvieran visitados, cierre el algoritmo.
+    	\item Vaya al paso 2
+    \end{enumerate}
+    El algoritmo de búsqueda local sigue los siguientes pasos:
+    \begin{enumerate}
+    	\item Seleccionamos los nodos a intercambiar.
+    	\item Si los nodos son adyacentes entonces: calculamos el delta de la siguiente manera $$C_{act} = C_{i-1,i}+C_{i,j}+C_{j,j+1}$$, $$C_{nue} = C_{i-1,j}+C_{j,i}+C_{i,j+1}$$ $$\delta = C_{act} - C_{nue}$$
+    	\item Si no, calculamos el delta de la siguiente manera: $$C_{act} = C_{i-1,i}+C_{i,i+1}+C_{j-1,j}+C_{j,j+1}$$, $$C_{nue} = C_{i-1,j}+C_{j,i+1}+C_{j-1,i}+C_{i,j+1}$$ $$\delta = C_{act} - C_{nue}$$
+    	\item Si $\delta \geq 0$ entonces intercambiamos los nodos.
+    	\item Si no hemos hecho esto para todos los nodos regresamos al paso 1. 
+    \end{enumerate}
+    \section{Implementación} 
+   	La implementación se realizó en lenguaje de programación python se tomaron alfas distintos que se presentarán más adelante y se dio una tolerancia de 1000 mejoras.
+    
+    \section{Resultados} 
+    Los resultados se pueden ver en el mismo enlace de git-hub, en los documentos txt, sin embargo se presentarán a continuación en una forma más ordenada:
+    
+    A continuación se muestran las tablas de los valores de la primera instancia:
+   	\begin{center}
+   		\begin{table}[h!]
+   			\begin{tabular}{|l|l|l|l|}
+   				\hline
+   				alfa: & 0.1    & Gxz: & -103556.36\\ \hline
+   				alfa: & 0.01   & Gxz: & -156626.45\\ \hline
+   				alfa: & 0.001  & Gxz: & -116451.28\\ \hline
+   				alfa: & 0.0001 & Gxz: & -102966.83\\ \hline
+   				alfa: & 1e-05  & Gxz: & -125238.87\\ \hline
+   				alfa: & 1e-06  & Gxz: & -46565.520\\ \hline
+   				alfa: & 0.1    & Gxz: & -163343.18\\ \hline
+   				alfa: & 0.01   & Gxz: & -74085.743\\ \hline
+   				alfa: & 0.001  & Gxz: & -61343.588\\ \hline
+   				alfa: & 0.0001 & Gxz: & -238723.52\\ \hline
+   				alfa: & 1e-05  & Gxz: & -138268.66\\ \hline
+   				alfa: & 1e-06  & Gxz: & -113330.60\\ \hline
+   			\end{tabular}
+   		\end{table}
+   	\end{center}
+   \begin{table}[]
+   	\begin{tabular}{|l|l|l|l|}
+   		\hline
+   		alfa: & 0.1    & Gxz: & -80355.99  \\ \hline
+   		alfa: & 0.01   & Gxz: & -79737.92		\\ \hline
+   		alfa: & 0.001  & Gxz: & -42127.17	\\ \hline
+   		alfa: & 0.0001 & Gxz: & -64159.61	\\ \hline
+   		alfa: & 1e-05  & Gxz: & -32660.29	\\ \hline
+   		alfa: & 1e-06  & Gxz: & -99522.65	\\ \hline
+   	\end{tabular}
+   \end{table}
+   
+   En la tabla anterior podemos observar que los valores son todos negativos lo cual queda muy lejos del valor buscado, sin embargo en la segunda tabla se muestran valores negativos pero de mejores valores.
+   
+   Se utilizaron dos instancias, en las cuales los valores esperados son de: 16099 y 235856.
+   
+   La siguiente tabla muestra los resultados para la segunda instancia:
+   
+   \begin{table}[h!]
+   	\begin{tabular}{|l|l|l|l|}
+   		\hline
+   		alfa: & 0.1    & Gxz: & -2223757.30 \\ \hline
+   		alfa: & 0.01   & Gxz: & -2441913.85 \\ \hline
+   		alfa: & 0.001  & Gxz: & -2058655.57 \\ \hline
+   		alfa: & 0.0001 & Gxz: & -5825746.00 \\ \hline
+   		alfa: & 1e-05  & Gxz: & -4531215.67 \\ \hline
+   		alfa: & 1e-06  & Gxz: & -3944743.90 \\ \hline
+   	\end{tabular}
+   \end{table}
+  
+    Como podemos ver todos los valores se presentan de manera dispersa, sin embargo ya se ven de una manera más uniforme, esto debido a que en el segundo cuadro se aumento la tolerancia de mejora.
+    
+    Los resultados pueden ser observados en el archivo resultados.txt que se encuentra en el repositorio de git hub.
+    
+    \section{Mejoras}
+    
+    Mejorar la búsqueda local, tomar una decisión de cambiar el criterio de aceptación.
+    \section{Conclusiones} 
+   	Las soluciones obtenidas son muy carentes a lo que se desea, por lo cual no cabe duda que existe trabajo futuro para mejorar el código.
+    
+    \bibliographystyle{apalike-es}
+    \bibliography{biblio}
+\end{document}
